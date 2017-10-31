@@ -3,20 +3,6 @@ import random
 import time
 from Tkinter import *
 
-######################################################################
-# This section contains functions for loading CSV (comma separated values)
-# files and convert them to a dataset of instances.
-# Each instance is a tuple of attributes. The entire dataset is a list
-# of tuples.
-######################################################################
-
-# Loads a CSV files into a list of tuples.
-# Ignores the first row of the file (header).
-# Numeric attributes are converted to floats, nominal attributes
-# are represented with strings.
-# Parameters:
-#   fileName: name of the CSV file to be read
-# Returns: a list of tuples
 def loadCSV(fileName):
     fileHandler = open(fileName, "rt")
     lines = fileHandler.readlines()
@@ -28,36 +14,21 @@ def loadCSV(fileName):
         dataset.append(instance)
     return dataset
 
-# Converts a comma separated string into a tuple
-# Parameters
-#   line: a string
-# Returns: a tuple
 def lineToTuple(line):
-    # remove leading/trailing witespace and newlines
+    
     cleanLine = line.strip()
-    # get rid of quotes
+    
     cleanLine = cleanLine.replace('"', '')
-    # separate the fields
     lineList = cleanLine.split(",")
-    # convert strings into numbers
     stringsToNumbers(lineList)
     lineTuple = tuple(lineList)
     return lineTuple
 
-# Destructively converts all the string elements representing numbers
-# to floating point numbers.
-# Parameters:
-#   myList: a list of strings
-# Returns None
 def stringsToNumbers(myList):
     for i in range(len(myList)):
         if (isValidNumberString(myList[i])):
             myList[i] = float(myList[i])
 
-# Checks if a given string can be safely converted into a positive float.
-# Parameters:
-#   s: the string to be checked
-# Returns: True if the string represents a positive float, False otherwise
 def isValidNumberString(s):
   if len(s) == 0:
     return False
@@ -67,12 +38,6 @@ def isValidNumberString(s):
     if c not in "0123456789.":
       return False
   return True
-
-
-######################################################################
-# This section contains functions for clustering a dataset
-# using the k-means algorithm.
-######################################################################
 
 def distance(instance1, instance2):
     if instance1 == None or instance2 == None:
@@ -129,7 +94,6 @@ def computeCentroids(clusters):
 def kmeans(instances, k, animation=False, initCentroids=None):
     result = {}
     if (initCentroids == None or len(initCentroids) < k):
-        # randomly select k initial centroids
         random.seed(time.time())
         centroids = random.sample(instances, k)
     else:
@@ -170,8 +134,6 @@ def computeWithinss(clusters, centroids):
             result += distance(centroid, instance)
     return result
 
-# Repeats k-means clustering n times, and returns the clustering
-# with the smallest withinss
 def repeatedKMeans(instances, k, n):
     bestClustering = {}
     bestClustering["withinss"] = float("inf")
@@ -185,11 +147,6 @@ def repeatedKMeans(instances, k, n):
     print "Trial with minimum withinss:", minWithinssTrial
     return bestClustering
 
-
-######################################################################
-# This section contains functions for visualizing datasets and
-# clustered datasets.
-######################################################################
 
 def printTable(instances):
     for instance in instances:
@@ -334,12 +291,7 @@ def paintClusters2D(canvas, clusters, centroids, title=""):
     width = canvas.winfo_reqwidth()
     canvas.create_text(width/2, 20, text=title, font="Sans 14")
     canvas.update()
-
-
-######################################################################
-# Test code
-######################################################################
-
+    
 #dataset = loadCSV("tshirts-G.csv")
 dataset = loadCSV("movie_titles.csv")
 #dataset = loadCSV("fashion-mnist_train.csv")
