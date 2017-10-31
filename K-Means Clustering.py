@@ -292,11 +292,7 @@ def paintClusters2D(canvas, clusters, centroids, title=""):
     canvas.create_text(width/2, 20, text=title, font="Sans 14")
     canvas.update()
     
-#dataset = loadCSV("tshirts-G.csv")
-dataset = loadCSV("movie_titles.csv")
-#dataset = loadCSV("fashion-mnist_train.csv")
-#dataset = loadCSV("fashion-mnist_test.csv")
-#dataset = loadCSV("fashion-mnist_train.csv")
+dataset = loadCSV("fashion-mnist_train.csv")
 showDataset2D(dataset)
 clustering = kmeans(dataset, 3, True)
 printTable(clustering["centroids"])
